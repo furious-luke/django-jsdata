@@ -1,7 +1,7 @@
 import re
 
 
-url_prog = re.compile(r'\^([a-z/]+)(\(\?P<pk>\[\^/\.\]\+\)/)?\$')
+url_prog = re.compile(r'\^([a-z/]+)(\(\?P<pk>\[\^/\.\]\+\)/)?([a-z/]*)\$')
 
 
 class JSDataViewMixin(object):
@@ -35,6 +35,8 @@ class DRFViewMixin(JSDataViewMixin):
                 api[url.name] = self.api_prefix + match.group(1)
                 if match.group(2):
                     api[url.name] += '<pk>/'
+                if match.group(3):
+                    api[url.name] += match.group(3)
         api.update(kwargs)
         return api
 
